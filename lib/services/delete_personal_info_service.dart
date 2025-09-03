@@ -6,7 +6,7 @@ class DeletePersonalInfoService {
   static Future<Map<String, dynamic>> deletePersonalInfo(int customerId) async {
     try {
       final response = await http.delete(
-        Uri.parse("http://127.0.0.1:8000/personalinfo/$customerId"),
+        Uri.parse("http://10.21.1.128.0.0.1:8000/personalinfo/$customerId"),
       );
 
       if (response.statusCode == 200) {
