@@ -32,9 +32,45 @@ class PersonalInfoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text("Personal Info"),
         backgroundColor: Colors.deepPurple,
       ),
+
+
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: const [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.deepPurple,
+              ),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.home),
+              title: Text('Home'),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('Settings'),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+            ),
+          ],
+        ),
+      ),
+
+
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: fetchPersonalInfo(),
         builder: (context, snapshot) {
@@ -54,55 +90,96 @@ class PersonalInfoScreen extends StatelessWidget {
               return const Center(child: Text("No data available"));
             }
 
-            // Scrollable DataTable
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: DataTable(
-                  headingRowColor: MaterialStateColor.resolveWith(
-                        (states) => Colors.deepPurple.shade100,
+            return ListView.builder(
+              itemCount: data.length,
+              itemBuilder: (context, index) {
+                final row = data[index];
+
+                return Card(
+                  margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  border: TableBorder.all(color: Colors.grey.shade300),
-                  columns: const [
-                    DataColumn(label: Text("ID")),
-                    DataColumn(label: Text("First Name")),
-                    DataColumn(label: Text("Last Name")),
-                    DataColumn(label: Text("Email")),
-                    DataColumn(label: Text("Created At")),
-                    DataColumn(label: Text("Actions")), // ✅ New column for Edit
-                  ],
-                  rows: data.map((row) {
-                    return DataRow(cells: [
-                      DataCell(Text(row["customer_id"].toString())),
-                      DataCell(Text(row["first_name"] ?? "")),
-                      DataCell(Text(row["last_name"] ?? "")),
-                      DataCell(Text(row["email"] ?? "")),
-                      DataCell(Text(row["created_at"] ?? "")),
-                      // ✅ Edit button
-                      DataCell(
-                        IconButton(
-                          icon: const Icon(Icons.edit, color: Colors.deepPurple),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => UpdatePersonalInfoScreen(
-                                  customerId: row["customer_id"],
-                                  firstName: row["first_name"] ?? "",
-                                  lastName: row["last_name"] ?? "",
-                                  email: row["email"] ?? "",
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ]);
-                  }).toList(),
-                ),
-              ),
+                  elevation: 2,
+                  child: ListTile(
+                    leading: const Icon(Icons.person, color: Colors.deepPurple),
+                    title: Text(
+                      "${row["first_name"] ?? ""} ${row["last_name"] ?? ""}",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text(row["email"] ?? ""),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.edit, color: Colors.deepPurple),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpdatePersonalInfoScreen(
+                              customerId: row["customer_id"],
+                              firstName: row["first_name"] ?? "",
+                              lastName: row["last_name"] ?? "",
+                              email: row["email"] ?? "",
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
             );
+
+
+            // Scrollable DataTable
+            // return SingleChildScrollView(
+            //   scrollDirection: Axis.horizontal,
+            //   child: SingleChildScrollView(
+            //     scrollDirection: Axis.vertical,
+            //     child: DataTable(
+            //       headingRowColor: MaterialStateColor.resolveWith(
+            //             (states) => Colors.deepPurple.shade100,
+            //       ),
+            //       border: TableBorder.all(color: Colors.grey.shade300),
+            //       columns: const [
+            //         //DataColumn(label: Text("ID")),
+            //         DataColumn(label: Text("First Name")),
+            //         DataColumn(label: Text("Last Name")),
+            //         DataColumn(label: Text("Email")),
+            //       //  DataColumn(label: Text("Created At")),
+            //         DataColumn(label: Text("Actions")), // ✅ New column for Edit
+            //       ],
+            //       rows: data.map((row) {
+            //         return DataRow(cells: [
+            //           //DataCell(Text(row["customer_id"].toString())),
+            //           DataCell(Text(row["first_name"] ?? "")),
+            //           DataCell(Text(row["last_name"] ?? "")),
+            //           DataCell(Text(row["email"] ?? "")),
+            //          // DataCell(Text(row["created_at"] ?? "")),
+            //           // ✅ Edit button
+            //           DataCell(
+            //             IconButton(
+            //               icon: const Icon(Icons.edit, color: Colors.deepPurple),
+            //               onPressed: () {
+            //                 Navigator.push(
+            //                   context,
+            //                   MaterialPageRoute(
+            //                     builder: (context) => UpdatePersonalInfoScreen(
+            //                       customerId: row["customer_id"],
+            //                       firstName: row["first_name"] ?? "",
+            //                       lastName: row["last_name"] ?? "",
+            //                       email: row["email"] ?? "",
+            //                     ),
+            //                   ),
+            //                 );
+            //               },
+            //             ),
+            //           ),
+            //         ]);
+            //       }).toList(),
+            //     ),
+            //   ),
+            // );
+
           } else {
             return const Center(child: Text("No data found"));
           }

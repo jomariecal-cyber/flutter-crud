@@ -50,6 +50,10 @@ class _UpdatePersonalInfoScreenState extends State<UpdatePersonalInfoScreen> {
           }),
         );
 
+
+
+
+
         if (response.statusCode == 200) {
           final responseData = jsonDecode(response.body);
           final message = responseData["message"] ?? "Updated successfully";

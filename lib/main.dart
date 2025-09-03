@@ -1,5 +1,6 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:i_am_rich/ewalletcard.dart';
 import 'screens/personal_info_screen.dart'; // Import our main screen
 
 void main() {
