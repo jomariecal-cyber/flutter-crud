@@ -1,4 +1,3 @@
-// screens/add_personal_info_screen.dart
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -21,22 +20,41 @@ class _AddPersonalInfoScreenState extends State<AddPersonalInfoScreen> {
   // Save data to backend
   Future<void> _saveData() async {
     if (_formKey.currentState!.validate()) {
-      final response = await http.post(
-        Uri.parse("http://10.21.1.128:8000/personalinfo"),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "first_name": _firstNameController.text,
-          "last_name": _lastNameController.text,
-          "email": _emailController.text,
-        }),
-      );
+      try {
+        final response = await http.post(
+          Uri.parse("http://10.21.1.128:8000/personalinfo"),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode({
+            "first_name": _firstNameController.text,
+            "last_name": _lastNameController.text,
+            "email": _emailController.text,
+          }),
+        );
 
-      if (response.statusCode == 201 || response.statusCode == 200) {
-        // Success -> go back
-        Navigator.pop(context, true);
-      } else {
+        if (response.statusCode == 201 || response.statusCode == 200) {
+          // Decode success response
+          final responseData = jsonDecode(response.body);
+          final message = responseData["message"] ?? "Saved successfully";
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(message)),
+          );
+
+          Navigator.pop(context, true); // Go back
+        } else {
+          // Decode error response from backend
+          final responseData = jsonDecode(response.body);
+          final errorMessage = responseData["detail"] ??
+              "Failed to save data. Code: ${response.statusCode}";
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(errorMessage)),
+          );
+        }
+      } catch (e) {
+        // Handle unexpected errors (like server down or JSON decode fail)
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Failed to save data: ${response.statusCode}")),
+          SnackBar(content: Text("Error: $e")),
         );
       }
     }
