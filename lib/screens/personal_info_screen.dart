@@ -71,6 +71,7 @@ class PersonalInfoScreen extends StatelessWidget {
       ),
 
 
+
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: fetchPersonalInfo(),
         builder: (context, snapshot) {

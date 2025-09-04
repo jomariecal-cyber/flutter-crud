@@ -1,6 +1,7 @@
 // main.dart
 import 'package:flutter/material.dart';
-import 'package:i_am_rich/ewalletcard.dart';
+import 'package:i_am_rich/ewalletcard/ewalletcard.dart';
+import 'package:i_am_rich/loanapp/dashboard.dart';
 import 'screens/personal_info_screen.dart'; // Import our main screen
 
 void main() {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple, // Theme color
       ),
-      home: const PersonalInfoScreen(), // Starting screen
+      home: const loan(), // Starting screen
     );
   }
 }
