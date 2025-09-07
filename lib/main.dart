@@ -1,7 +1,8 @@
 // main.dart
 import 'package:flutter/material.dart';
 import 'package:i_am_rich/ewalletcard/ewalletcard.dart';
-import 'package:i_am_rich/loanapp/dashboard.dart';
+import 'package:i_am_rich/loanapp/old_dashboard.dart';
+import 'package:i_am_rich/loanapp/dashboard2.dart';
 import 'screens/personal_info_screen.dart'; // Import our main screen
 
 
@@ -20,10 +21,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false, // Hide the debug banner
       title: "Personal Info App",
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple, // Theme color
+        primarySwatch: Colors.green, // Theme color
       ),
-      home: const loan(
-      ), // Starting screen
+      home: LoanFormScreen(),
     );
   }
 }

@@ -17,10 +17,12 @@ class _loanState extends State<loan> {
   String? selectedTerm;
 
   //loan Details
-
   final List<Map<String, dynamic>> institutions = [
-    {"name": "CARD RBI", "value": 100},
-    {"name": "CARD INC.", "value": 200},
+    {"name": "CARD RBI", 
+    "value": 100},
+    
+    {"name": "CARD INC.", 
+    "value": 200},
   ];
 
   final List<String> terms = [];
@@ -41,7 +43,7 @@ class _loanState extends State<loan> {
         body: jsonEncode({
           "frequency": "Weekly",
           "amount": 0,
-          "product_code": 301
+          "product_code": 302
         }),
       );
 
@@ -72,22 +74,21 @@ class _loanState extends State<loan> {
 // loan details declaration
   Map<String, dynamic>? loanDetails;
 
-
   Future<Map<String, dynamic>> fetchLoanDetails() async {
     final url = Uri.parse("https://dev-api-janus.fortress-asya.com:18003/loanCalculator");
 
     // Sample request body (later you can replace with actual values from your form)
     final body = {
-      "instiCode": "100",
-      "loanBalance": 9000,
-      "principal": "3000",
-      "n": 4,
-      "meetingDay": 3,
-      "loanProductCode": 302,
-      "withDST": 0,
-      "isLumpsum": 0,
-      "frequency": 50,
-      "dateReleased": "2025-09-04 09:25:59.496478"
+   "instiCode": "100",
+    "loanBalance": 9000,
+    "principal": "3000",
+    "n": 4,
+    "meetingDay": 3,
+    "loanProductCode": 301,
+    "withDST": 0,
+    "isLumpsum": 0,
+    "frequency": 50,
+    "dateReleased": "2025-09-04 09:25:59.496478"
     };
 
     final response = await http.post(
@@ -116,6 +117,8 @@ class _loanState extends State<loan> {
     super.initState();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,33 +138,31 @@ class _loanState extends State<loan> {
                 height: 10,
               ),
 
-
-
-              Center(
-                child: DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    labelText: "Choose Institution",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+              DropdownButtonFormField<String>(
+                decoration: InputDecoration(
+                  labelText: "Choose Institution",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  onChanged: (newValue) {
-                    setState(() {
-                        selectedInstiName= newValue;
-                        selectedInstiValue = institutions
-                            .firstWhere((insti) => insti["name"] == newValue) ["value"];
-                      });
-                    print("Selected: $selectedInstiName, Value: $selectedInstiValue");
-                  },
-                  items: institutions.map((insti) {
-                      return DropdownMenuItem<String>(
-                        value: insti["name"],
-                        child: Text(insti["name"]),
-                      );
-                    }).toList(),
                 ),
-
+                onChanged: (newValue) {
+                  setState(() {
+                      selectedInstiName= newValue;
+                      selectedInstiValue = institutions
+                          .firstWhere((insti) => insti["name"] == newValue) ["value"];
+                    });
+                  print("Selected: $selectedInstiName, Value: $selectedInstiValue");
+                },
+                items: institutions.map((insti) {
+                    return DropdownMenuItem<String>(
+                      value: insti["name"],
+                      child: Text(insti["name"]),
+                    );
+                  }).toList(),
               ),
+
+
+
               const SizedBox(
                 height: 20,
               ),
@@ -175,9 +176,11 @@ class _loanState extends State<loan> {
                   ),
                 ),
               ),
+
               const SizedBox(
                 height: 20,
               ),
+
               TextField(
                 keyboardType: TextInputType.number,
                 //controller: textController,
@@ -188,6 +191,7 @@ class _loanState extends State<loan> {
                   ),
                 ),
               ),
+
               const SizedBox(height: 20),
 
               isLoadingTerms
@@ -274,14 +278,8 @@ class _loanState extends State<loan> {
                   },
                   child: const Text("Submit"),
                 ),
-
               )
-
-
             ],
-
-
-
           ),
         ),
       ),

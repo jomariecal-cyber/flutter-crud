@@ -58,7 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
               subtitle: Text(name),
               title: Text(email),
             );
-          }),
+           }
+          ),
       // 3 under this make a button
       floatingActionButton: FloatingActionButton(
         onPressed: fetchUsers,
